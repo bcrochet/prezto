@@ -32,7 +32,15 @@ zstyle ':prezto:load' pmodule \
   'spectrum' \
   'utility' \
   'completion' \
-  'prompt'
+  'prompt' \
+  'git' \
+  'python' \
+  'node' \
+  'gpg-agent' \
+  'ruby' \
+  'rails' \
+  'screen' \
+  'yum'
 
 #
 # Editor
