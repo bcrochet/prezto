@@ -11,4 +11,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export PYTHONPATH=$HOME/workspace/cfme_pages
 
+pyenv() { source $HOME/python_envs/$*/bin/activate; }
