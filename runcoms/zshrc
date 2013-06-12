@@ -11,6 +11,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-export PYTHONPATH=$HOME/workspace/cfme_pages
-
 pyenv() { source $HOME/python_envs/$*/bin/activate; }
+
+PATH=$PATH:$HOME/node-v0.10.1-linux-x64/bin    # Add node to PATH
+PATH=$PATH:$HOME/android-sdks/platform-tools:$HOME/android-sdks/tools # Add adb/fastboot to PATH
+PATH=$PATH:$HOME/sublime2
+
+export PATH
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
