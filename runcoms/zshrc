@@ -12,11 +12,27 @@ fi
 
 # Customize to your needs...
 pyenv() { source $HOME/python_envs/$*/bin/activate; }
+if [[ -s "${ZDOTDIR:-$HOME}/.local_aliases" ]]; then
+  source "${ZDOTDIR:-$HOME}/.local_aliases"
+fi
+
+dev() {
+  if [ "2" -ne "$#" ]; then
+    echo "Usage: dev start|stop Product-folder-path" && return 1
+  elif [ "start" == "$1" ]; then
+    $HOME/bin/dev_start.sh $2
+  else
+    echo "$1 method not implmented"
+  fi
+}
 
 PATH=$PATH:$HOME/node-v0.10.1-linux-x64/bin    # Add node to PATH
 PATH=$PATH:$HOME/android-sdks/platform-tools:$HOME/android-sdks/tools # Add adb/fastboot to PATH
 PATH=$PATH:$HOME/sublime2
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 export PATH
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# Aliases
+alias grhu='git reset --hard upstream/master'
+
