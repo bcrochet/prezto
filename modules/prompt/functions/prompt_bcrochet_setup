@@ -18,9 +18,16 @@ function prompt_bcrochet_pwd {
   fi
 }
 
+function prompt_bcrochet_ruby_info {
+  _prompt_bcrochet_ruby_info="$(echo ${ruby_info[version]} | cut -f 2 -d '@' -s)"
+}
+
 function prompt_bcrochet_precmd {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
+
+  local TERMWIDTH
+  (( TERMWIDTH = ${COLUMNS} - 1 ))
 
   # Format PWD.
   prompt_bcrochet_pwd
@@ -34,6 +41,10 @@ function prompt_bcrochet_precmd {
   if (( $+functions[ruby-info] )); then
     ruby-info
   fi
+  
+  # Format Ruby
+  prompt_bcrochet_ruby_info
+
 }
 
 function prompt_bcrochet_setup {
@@ -76,7 +87,7 @@ function prompt_bcrochet_setup {
   zstyle ':prezto:module:ruby:info:version' format '%v '
 
   # Define prompts.
-  PROMPT='%F{blue}${ruby_info[version]}%f%F{cyan}${_prompt_bcrochet_pwd}%f${git_info:+${(e)git_info[prompt]}}%(!. %B%F{red}#%f%b.)${editor_info[keymap]} '
+  PROMPT='%F{magenta}%n%f at %F{yellow}%m%f %F{blue}${_prompt_bcrochet_ruby_info}%f${prompt_newline} %F{cyan}${_prompt_bcrochet_pwd}%f${git_info:+${(e)git_info[prompt]}}%(!. %B%F{red}#%f%b.)${editor_info[keymap]} '
   RPROMPT='${editor_info[overwrite]}%(?:: %F{red}⏎%f)${VIM:+" %B%F{green}V%f%b"}${git_info[rprompt]}'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
