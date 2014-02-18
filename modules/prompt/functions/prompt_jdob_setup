@@ -1,0 +1,86 @@
+# Load colors and create aliases
+pmodload 'helper'
+
+function prompt_jdob_precmd {
+    setopt LOCAL_OPTIONS
+    unsetopt XTRACE KSH_ARRAYS
+
+    local TERMWIDTH
+    (( TERMWIDTH = ${COLUMNS} - 1 ))
+
+    # Get Git repository information.
+    if (( $+functions[git-info] )); then
+        git-info
+    fi
+}
+
+function prompt_jdob_setup {
+    setopt LOCAL_OPTIONS
+    unsetopt XTRACE KSH_ARRAYS
+    prompt_opts=(cr percent subst)
+    autoload -U colors zsh/terminfo # Used in the colour alias below
+    colors
+
+    # Load required functions.
+    autoload -Uz add-zsh-hook
+
+    # Add hook for calling git-info before each command.
+    add-zsh-hook precmd prompt_jdob_precmd
+
+    # Set the colors so they can be overridden in .zshrc
+    if [ -z "$COLOR_BORDER" ]; then
+      COLOR_BORDER='%B%F{blue}'
+    fi
+    if [ -z "$COLOR_USER" ]; then
+      COLOR_USER='%B%F{cyan}'
+    fi
+    if [ -z "$COLOR_HOST" ]; then
+      COLOR_HOST="%B%F{magenta}"
+    fi
+    if [ -z "$COLOR_CWD" ]; then
+      COLOR_CWD="%B%F{green}"
+    fi
+    if [ -z "$COLOR_GIT" ]; then
+      COLOR_GIT="%F{yellow}"
+    fi
+    if [ -z "$COLOR_RETURN" ]; then
+      COLOR_RETURN="%B%F{red}"
+    fi
+
+    # Git
+    zstyle ':prezto:module:git:info' verbose 'yes'
+    zstyle ':prezto:module:git:info:action' format ':%%B%F{yellow}%s%f%%b'
+    zstyle ':prezto:module:git:info:added' format ' %%B%F{green}✚%f%%b'
+    zstyle ':prezto:module:git:info:ahead' format ' %%B%F{yellow}⬆%f%%b'
+    zstyle ':prezto:module:git:info:behind' format ' %%B%F{yellow}⬇%f%%b'
+    zstyle ':prezto:module:git:info:branch' format " ${COLOR_GIT}%b%f"
+    zstyle ':prezto:module:git:info:clean' format ' %%B%F{green}✔%f%%b'
+    zstyle ':prezto:module:git:info:commit' format ':%F{green}%.7c%f'
+    zstyle ':prezto:module:git:info:deleted' format ' %%B%F{red}✘%f%%b'
+    zstyle ':prezto:module:git:info:modified' format ' %%B%F{red}✱%f%%b'
+    zstyle ':prezto:module:git:info:position' format ':%F{red}%p%f'
+    zstyle ':prezto:module:git:info:renamed' format ' %%B%F{magenta}➜%f%%b'
+    zstyle ':prezto:module:git:info:stashed' format ' %%B%F{cyan}✭%f%%b'
+    zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{yellow}═%f%%b'
+    zstyle ':prezto:module:git:info:untracked' format ' %%B%F{white}◼%f%%b'
+    zstyle ':prezto:module:git:info:keys' format \
+      'prompt' "${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f "
+
+    # Pieces to be used in the prompts
+    return_code="%(?..${COLOR_RETURN}%? ↵%f)"
+    prompt_char="${COLOR_BORDER}➤ %f"
+    user="${COLOR_USER}%n%f"
+    host="${COLOR_HOST}%M%f"
+    current_dir="${COLOR_CWD}%~%f"
+    git_branch="${COLOR_GIT}%b%f"
+
+    top_leader='╭─'
+    bottom_leader='╰─'
+
+    # Assemble the prompts
+    PROMPT='${COLOR_BORDER}${top_leader}[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─[%f${git_info:+${(e)git_info[prompt]}}${COLOR_BORDER}]─●
+${bottom_leader}%f${prompt_char}%f%{$terminfo[sgr0]%}'
+    RPROMPT='${return_code}'
+}
+
+prompt_jdob_setup "$@"
