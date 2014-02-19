@@ -18,6 +18,11 @@ path=(
   $path
 )
 
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/workspace
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+
 # Ensure that a non-login, non-interactive shell has a defined environment.
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"

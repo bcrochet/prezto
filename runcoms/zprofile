@@ -70,3 +70,6 @@ if [[ ! -d "$TMPPREFIX" ]]; then
 fi
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Load virtualenvwrapper
+[[ -s "/usr/bin/virtualenvwrapper.sh" ]] && source /usr/bin/virtualenvwrapper.sh

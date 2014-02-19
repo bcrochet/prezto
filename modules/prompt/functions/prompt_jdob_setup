@@ -12,6 +12,11 @@ function prompt_jdob_precmd {
     if (( $+functions[git-info] )); then
         git-info
     fi
+
+    # Get Python virtualenv information.
+    if (( $+functions[python-info] )); then
+        python-info
+    fi
 }
 
 function prompt_jdob_setup {
@@ -66,8 +71,11 @@ function prompt_jdob_setup {
     zstyle ':prezto:module:git:info:keys' format \
       'prompt' "${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f "
 
+    # Python Virtualenv
+    zstyle ':prezto:module:python:info:virtualenv' format '%%B%F{210}%v%f%%b'
+
     # Pieces to be used in the prompts
-    return_code="%(?..${COLOR_RETURN}%? ↵%f)"
+    return_code="%(?..${COLOR_RETURN}%? ↵%f)%{$terminfo[sgr0]%}"
     prompt_char="${COLOR_BORDER}➤ %f"
     user="${COLOR_USER}%n%f"
     host="${COLOR_HOST}%M%f"
@@ -78,7 +86,7 @@ function prompt_jdob_setup {
     bottom_leader='╰─'
 
     # Assemble the prompts
-    PROMPT='${COLOR_BORDER}${top_leader}[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─[%f${git_info:+${(e)git_info[prompt]}}${COLOR_BORDER}]─●
+    PROMPT='${COLOR_BORDER}${top_leader}[%f${python_info[virtualenv]}${COLOR_BORDER}]─[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─[%f${git_info:+${(e)git_info[prompt]}}${COLOR_BORDER}]─●
 ${bottom_leader}%f${prompt_char}%f%{$terminfo[sgr0]%}'
     RPROMPT='${return_code}'
 }

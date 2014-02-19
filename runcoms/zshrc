@@ -11,10 +11,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-pyenv() { source $HOME/python_envs/$*/bin/activate; }
 if [[ -s "${ZDOTDIR:-$HOME}/.local_aliases" ]]; then
   source "${ZDOTDIR:-$HOME}/.local_aliases"
 fi
+
+# Functions
+pyenv() { source $HOME/.virtualenvs/$*/bin/activate; }
 
 dev() {
   if [ "2" -ne "$#" ]; then
@@ -26,6 +28,7 @@ dev() {
   fi
 }
 
+create_role() { mkdir -p roles/${1}/tasks; touch roles/${1}/tasks/main.yml }
+
 # Aliases
 alias grhu='git reset --hard upstream/master'
-create_role() { mkdir -p roles/${1}/tasks; touch roles/${1}/tasks/main.yml }
