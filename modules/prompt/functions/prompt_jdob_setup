@@ -1,6 +1,10 @@
 # Load colors and create aliases
 pmodload 'helper'
 
+function prompt_jdob_ruby_info {
+  _prompt_jdob_ruby_info="$(echo ${ruby_info[version]} | awk '/@/ { print $0; }')"
+}
+
 function prompt_jdob_precmd {
     setopt LOCAL_OPTIONS
     unsetopt XTRACE KSH_ARRAYS
@@ -17,6 +21,13 @@ function prompt_jdob_precmd {
     if (( $+functions[python-info] )); then
         python-info
     fi
+
+    # Get Ruby version information.
+    if (( $+functions[ruby-info] )); then
+        ruby-info
+    fi
+
+    prompt_jdob_ruby_info
 }
 
 function prompt_jdob_setup {
@@ -51,6 +62,12 @@ function prompt_jdob_setup {
     if [ -z "$COLOR_RETURN" ]; then
       COLOR_RETURN="%B%F{red}"
     fi
+    if [ -z "$COLOR_RUBY" ]; then
+      COLOR_RUBY="%F{red}"
+    fi
+    if [ -z "$COLOR_PYTHON" ]; then
+      COLOR_PYTHON="%F{210}"
+    fi
 
     # Git
     zstyle ':prezto:module:git:info' verbose 'yes'
@@ -69,10 +86,13 @@ function prompt_jdob_setup {
     zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{yellow}═%f%%b'
     zstyle ':prezto:module:git:info:untracked' format ' %%B%F{white}◼%f%%b'
     zstyle ':prezto:module:git:info:keys' format \
-      'prompt' "${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f "
+      'prompt' "${COLOR_BORDER}[%f%%b${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f ${COLOR_BORDER}]─"
 
     # Python Virtualenv
-    zstyle ':prezto:module:python:info:virtualenv' format '%%B%F{210}%v%f%%b'
+    zstyle ':prezto:module:python:info:virtualenv' format "${COLOR_BORDER}[%f%%b${COLOR_PYTHON}%v%f%%b${COLOR_BORDER}]─"
+
+    # Ruby version
+    zstyle ':prezto:module:ruby:info:version' format "${COLOR_BORDER}[%f%%b${COLOR_RUBY}%v%f${COLOR_BORDER}]─"
 
     # Pieces to be used in the prompts
     return_code="%(?..${COLOR_RETURN}%? ↵%f)%{$terminfo[sgr0]%}"
@@ -86,7 +106,7 @@ function prompt_jdob_setup {
     bottom_leader='╰─'
 
     # Assemble the prompts
-    PROMPT='${COLOR_BORDER}${top_leader}[%f${python_info[virtualenv]}${COLOR_BORDER}]─[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─[%f${git_info:+${(e)git_info[prompt]}}${COLOR_BORDER}]─●
+    PROMPT='${COLOR_BORDER}${top_leader}%{${python_info[virtualenv]}%}%{${_prompt_jdob_ruby_info}%}[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─%{${git_info:+${(e)git_info[prompt]}}%}●
 ${bottom_leader}%f${prompt_char}%f%{$terminfo[sgr0]%}'
     RPROMPT='${return_code}'
 }
