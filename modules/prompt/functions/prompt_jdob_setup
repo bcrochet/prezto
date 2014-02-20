@@ -69,6 +69,13 @@ function prompt_jdob_setup {
       COLOR_PYTHON="%F{210}"
     fi
 
+    begin_bracket_base="${COLOR_BORDER}[%f"
+    end_bracket_base="${COLOR_BORDER}]─%f"
+    begin_bracket="${begin_bracket_base}%b"
+    end_bracket="${end_bracket_base}%b"
+    begin_bracket_style="%${begin_bracket_base}%%b"
+    end_bracket_style="%${end_bracket_base}%%b"
+
     # Git
     zstyle ':prezto:module:git:info' verbose 'yes'
     zstyle ':prezto:module:git:info:action' format ':%%B%F{yellow}%s%f%%b'
@@ -86,28 +93,28 @@ function prompt_jdob_setup {
     zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{yellow}═%f%%b'
     zstyle ':prezto:module:git:info:untracked' format ' %%B%F{white}◼%f%%b'
     zstyle ':prezto:module:git:info:keys' format \
-      'prompt' "${COLOR_BORDER}[%f%%b${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f ${COLOR_BORDER}]─"
+      'prompt' "${begin_bracket_style}%%B${COLOR_GIT}$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u%f%%b ${end_bracket_style}"
 
     # Python Virtualenv
-    zstyle ':prezto:module:python:info:virtualenv' format "${COLOR_BORDER}[%f%%b${COLOR_PYTHON}%v%f%%b${COLOR_BORDER}]─"
+    zstyle ':prezto:module:python:info:virtualenv' format "${begin_bracket_style}${COLOR_PYTHON}%v%f%%b${end_bracket_style}"
 
     # Ruby version
-    zstyle ':prezto:module:ruby:info:version' format "${COLOR_BORDER}[%f%%b${COLOR_RUBY}%v%f${COLOR_BORDER}]─"
+    zstyle ':prezto:module:ruby:info:version' format "${begin_bracket_style}${COLOR_RUBY}%v%f${end_bracket_style}"
 
     # Pieces to be used in the prompts
     return_code="%(?..${COLOR_RETURN}%? ↵%f)%{$terminfo[sgr0]%}"
-    prompt_char="${COLOR_BORDER}➤ %f"
-    user="${COLOR_USER}%n%f"
-    host="${COLOR_HOST}%M%f"
-    current_dir="${COLOR_CWD}%~%f"
+    prompt_char="${COLOR_BORDER}➤ %f%b"
+    user="${begin_bracket}${COLOR_USER}%n%f${end_bracket}"
+    host="${begin_bracket}${COLOR_HOST}%M%f${end_bracket}"
+    current_dir="${begin_bracket}${COLOR_CWD}%~%f${end_bracket}"
     git_branch="${COLOR_GIT}%b%f"
 
-    top_leader='╭─'
-    bottom_leader='╰─'
+    top_leader="${COLOR_BORDER}╭─%f%b"
+    bottom_leader="${COLOR_BORDER}╰─%f%b"
 
     # Assemble the prompts
-    PROMPT='${COLOR_BORDER}${top_leader}%{${python_info[virtualenv]}%}%{${_prompt_jdob_ruby_info}%}[%f${user}${COLOR_BORDER}]─[%f${host}${COLOR_BORDER}]─[%f${current_dir}${COLOR_BORDER}]─%{${git_info:+${(e)git_info[prompt]}}%}●
-${bottom_leader}%f${prompt_char}%f%{$terminfo[sgr0]%}'
+    PROMPT='${top_leader}%{${python_info[virtualenv]}%}%{${_prompt_jdob_ruby_info}%}${user}${host}${current_dir}%{${git_info:+${(e)git_info[prompt]}}%}${COLOR_BORDER}●%f%b
+${bottom_leader}${prompt_char}%{$terminfo[sgr0]%}'
     RPROMPT='${return_code}'
 }
 
