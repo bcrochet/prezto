@@ -50,6 +50,9 @@ function prompt_jdob_setup {
     if [ -z "$COLOR_USER" ]; then
       COLOR_USER='%B%F{cyan}'
     fi
+    if [ -z "$COLOR_ROOT" ]; then
+      COLOR_ROOT='%B%F{red}'
+    fi
     if [ -z "$COLOR_HOST" ]; then
       COLOR_HOST="%B%F{magenta}"
     fi
