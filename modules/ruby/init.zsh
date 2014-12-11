@@ -23,6 +23,16 @@ elif [[ -s "$HOME/.rbenv/bin/rbenv" ]]; then
 elif (( $+commands[rbenv] )); then
   eval "$(rbenv init - --no-rehash zsh)"
 
+# Load package manager installed chruby into the shell session.
+elif (( $+commands[chruby-exec] )); then
+  source "${commands[chruby-exec]:h:h}/share/chruby/chruby.sh"
+  if zstyle -t ':prezto:module:ruby:chruby' auto-switch; then
+    source "${commands[chruby-exec]:h:h}/share/chruby/auto.sh"
+
+    # If a default Ruby is set, switch to it.
+    chruby_auto
+  fi
+
 # Prepend local gems bin directories to PATH.
 else
   path=($HOME/.gem/ruby/*/bin(N) $path)
@@ -56,4 +66,3 @@ if (( $+commands[bundle] )); then
     && print vendor/bundle >>! .gitignore \
     && print vendor/cache  >>! .gitignore'
 fi
-

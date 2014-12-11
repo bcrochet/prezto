@@ -27,6 +27,15 @@ To avoid keeping open sessions, this module sets `destroy-unattached off` on
 the background session and `destroy-unattached on` on every other session
 (global setting).
 
+#### iTerm2 Integration
+
+[iTerm2][6] offers significant integration with tmux. This can be enabled by
+adding the following line to *zpreztorc*:
+
+    zstyle ':prezto:module:tmux:iterm' integrate 'yes'
+
+Read [iTerm2 and tmux Integration][7] for more information.
+
 Aliases
 -------
 
@@ -60,4 +69,5 @@ Authors
 [3]: https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 [4]: https://github.com/mxcl/homebrew
 [5]: https://github.com/sorin-ionescu/prezto/issues
-
+[6]: http://iterm2.com
+[7]: https://code.google.com/p/iterm2/wiki/TmuxIntegration
