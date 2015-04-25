@@ -61,7 +61,7 @@ fi
 #
 
 if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$USER"
+  export TMPDIR="/tmp/$LOGNAME"
   mkdir -p -m 700 "$TMPDIR"
 fi
 
@@ -79,3 +79,4 @@ fi
 # instead of leaving it unchanged in the argument list. This also 
 # applies to file expansion of an initial ~ or =.
 unsetopt nomatch
+
