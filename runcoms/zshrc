@@ -15,6 +15,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.local_aliases" ]]; then
   source "${ZDOTDIR:-$HOME}/.local_aliases"
 fi
 
+source $HOME/.powerline/powerline/bindings/zsh/powerline.zsh
+
 # Functions
 pyenv() { source $HOME/.virtualenvs/$*/bin/activate; }
 
@@ -32,3 +34,5 @@ create_role() { mkdir -p roles/${1}/tasks; touch roles/${1}/tasks/main.yml }
 
 # Aliases
 alias grhu='git reset --hard upstream/master'
+
+for config_file ($HOME/.yadr/zsh/*.zsh) source $config_file

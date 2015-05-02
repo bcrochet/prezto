@@ -10,7 +10,7 @@
 #
 
 # Set case-sensitivity for completion, history lookup, etc.
-# zstyle ':prezto:*:*' case-sensitive 'yes'
+zstyle ':prezto:*:*' case-sensitive 'no'
 
 # Color output (auto set to 'no' on dumb terminals).
 zstyle ':prezto:*:*' color 'yes'
@@ -32,12 +32,18 @@ zstyle ':prezto:load' pmodule \
   'spectrum' \
   'utility' \
   'completion' \
-  'prompt' \
+  'archive' \
+  'fasd' \
+  'osx' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'ssh' \
   'git' \
   'python' \
   'node' \
   'gpg' \
   'ruby' \
+  'prompt' \
   'rails' \
   'screen' \
   'yum'
@@ -106,6 +112,13 @@ zstyle ':prezto:module:prompt' theme 'jdob'
 # zstyle ':prezto:module:screen:auto-start' remote 'yes'
 
 #
+# GPG-Agent
+#
+
+# Enable SSH-Agent protocol emulation.
+# zstyle ':prezto:module:gpg-agent' ssh-support 'yes'
+
+#
 # SSH
 #
 
@@ -113,7 +126,7 @@ zstyle ':prezto:module:prompt' theme 'jdob'
 zstyle ':prezto:module:ssh-agent' forwarding 'yes'
 
 # Set ssh-agent identities to load.
-zstyle ':prezto:module:ssh-agent' identities 'id_dsa'
+zstyle ':prezto:module:ssh-agent' identities 'id_dsa' 'id_rsa'
 
 #
 # Syntax Highlighting
